@@ -893,19 +893,18 @@ window.gasPostBody = function(params){
         rsvpLogContent.innerHTML = '<p style="text-align:center; color:var(--ink-soft);">No responses yet.</p>';
         return;
       }
-      rsvpLogContent.innerHTML = entries.map(function(en){
-        var badgeColor = en.attend === 'yes' ? 'var(--sage)' : 'var(--wine)';
-        var badgeText = en.attend === 'yes' ? 'Accepted' : 'Declined';
-        return '<div style="padding:14px 0; border-bottom:1px solid var(--parchment-line);">' +
-          '<div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">' +
-            '<span style="font-family:\'Cormorant Garamond\',serif; font-size:19px;">' + escapeHtml(en.name) + '</span>' +
-            '<span style="font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:' + badgeColor + ';">' + badgeText + (en.attend === 'yes' ? ' · ' + escapeHtml(String(en.guests || 1)) + ' guest' + (Number(en.guests) === 1 ? '' : 's') : '') + '</span>' +
+      rsvpLogContent.innerHTML = '<div class="rsvp-tiles">' + entries.map(function(en){
+        var isYes = en.attend === 'yes';
+        var numLabel = isYes ? escapeHtml(String(en.guests || 1)) : '—';
+        return '<div class="rsvp-tile">' +
+          '<div class="rsvp-tile-num ' + (isYes ? 'yes' : 'no') + '">' + numLabel + '</div>' +
+          '<div class="rsvp-tile-body">' +
+            '<h4>' + escapeHtml(en.name) + '</h4>' +
+            '<div class="status ' + (isYes ? 'yes' : 'no') + '">' + (isYes ? 'Accepted' : 'Declined') + '</div>' +
+            (en.note ? '<div class="sub">"' + escapeHtml(en.note) + '"</div>' : '') +
           '</div>' +
-          (en.phone ? '<div style="font-size:13px; color:var(--ink-soft); margin-top:2px;">' + escapeHtml(en.phone) + '</div>' : '') +
-          (en.note ? '<div style="font-size:14px; color:var(--ink); margin-top:6px; font-style:italic;">"' + escapeHtml(en.note) + '"</div>' : '') +
-          '<div style="font-size:11px; color:var(--ink-soft); margin-top:6px;">' + fmtDate(en.ts) + '</div>' +
         '</div>';
-      }).join('');
+      }).join('') + '</div>';
     }catch(e){
       rsvpLogContent.innerHTML = '<p style="text-align:center; color:var(--wine);">Could not load responses — please try again.</p>';
     }
