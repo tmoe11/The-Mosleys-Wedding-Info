@@ -702,8 +702,8 @@
     <button class="modal-close" id="rsvpThankYouClose" aria-label="Close">&times;</button>
     <div style="font-family:'Parisienne',cursive; font-size:22px; color:var(--gold); margin-bottom:6px;">&amp;</div>
     <h3 style="margin-bottom:14px;">Thank You!</h3>
-    <p style="color:var(--ink-soft); font-size:16px; margin:0;">Your RSVP has been received — we can't wait to celebrate with you.</p>
-    <a id="addToCalendarBtn" class="btn" style="display:none; margin-top:22px;" download="Karlee-Tyler-Wedding.ics">Add to Calendar</a>
+    <p id="thankYouMessage" style="color:var(--ink-soft); font-size:16px; margin:0;">Your RSVP has been received — we can't wait to celebrate with you.</p>
+    <a id="addToCalendarBtn" class="btn" style="display:none; margin-top:22px;" target="_blank">Add to Calendar</a>
   </div>
 </div>
 
@@ -1141,7 +1141,11 @@ window.gasPostBody = function(params){
   }
   addToCalendarBtn.href = buildCalendarLink();
 
+  var thankYouMessage = document.getElementById('thankYouMessage');
   function showThankYou(attending){
+    thankYouMessage.textContent = attending
+      ? 'Your RSVP has been received — we can\'t wait to celebrate with you.'
+      : 'Sorry you can\'t join us, but thank you for taking a moment to respond.';
     addToCalendarBtn.style.display = attending ? '' : 'none';
     rsvpThankYouModal.style.display = '';
     clearTimeout(thankYouTimer);
