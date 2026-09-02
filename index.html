@@ -703,7 +703,7 @@
     <div style="font-family:'Parisienne',cursive; font-size:22px; color:var(--gold); margin-bottom:6px;">&amp;</div>
     <h3 style="margin-bottom:14px;">Thank You!</h3>
     <p id="thankYouMessage" style="color:var(--ink-soft); font-size:16px; margin:0;">Your RSVP has been received — we can't wait to celebrate with you.</p>
-    <a id="addToCalendarBtn" class="btn" style="display:none; margin-top:22px;" target="_blank">Add to Calendar</a>
+    <a id="addToCalendarBtn" class="btn" style="display:none; margin-top:22px;" href="wedding-event.ics">Add to Calendar</a>
   </div>
 </div>
 
@@ -1117,29 +1117,9 @@ window.gasPostBody = function(params){
   var rsvpThankYouClose = document.getElementById('rsvpThankYouClose');
   var addToCalendarBtn = document.getElementById('addToCalendarBtn');
   var thankYouTimer = null;
-
-  // Builds a downloadable .ics file so guests can add the wedding straight
-  // to their phone's calendar. Uses local (floating) time — no timezone
-  // conversion — since the wedding time is specific to Jackson, MS.
-  function buildCalendarLink(){
-    var lines = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Karlee and Tyler Wedding//EN',
-      'BEGIN:VEVENT',
-      'UID:karlee-tyler-wedding-20261101@marrythemosleys',
-      'DTSTAMP:20260101T000000Z',
-      'DTSTART:20261101T160000',
-      'DTEND:20261101T230000',
-      'SUMMARY:Karlee & Tyler\'s Wedding',
-      'LOCATION:Reed House at Live Oaks\\, 11200 Hwy 49\\, Jackson\\, MS 39209',
-      'DESCRIPTION:Guest arrival 4:00 PM · Ceremony 4:30 PM · Reception 5:00 PM · Cake cutting 6:00 PM · Party 7:00 PM',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ];
-    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(lines.join('\r\n'));
-  }
-  addToCalendarBtn.href = buildCalendarLink();
+  // "Add to Calendar" links to a real wedding-event.ics file sitting next to
+  // index.html — iOS Safari doesn't reliably recognize calendar files built
+  // as data: URIs, but it does recognize an actual .ics file it navigates to.
 
   var thankYouMessage = document.getElementById('thankYouMessage');
   function showThankYou(attending){
