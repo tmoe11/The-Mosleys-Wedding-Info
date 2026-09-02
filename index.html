@@ -556,7 +556,8 @@
     <h3 style="text-align:center; max-width:900px; margin:56px auto 0; font-family:'Cormorant Garamond',serif; font-size:24px; letter-spacing:.04em; color:var(--sage);">Schedule</h3>
     <div class="timeline">
       <div class="t-row"><div class="t-time">4:30</div><div class="t-dot"><span></span></div><div class="t-label">Ceremony<small>Please be seated by 4:20</small></div></div>
-      <div class="t-row"><div class="t-time">5:00</div><div class="t-dot"><span></span></div><div class="t-label">Reception</div></div>
+      <div class="t-row"><div class="t-time">5:00</div><div class="t-dot"><span></span></div><div class="t-label">Cocktail Hour</div></div>
+      <div class="t-row"><div class="t-time">6:00</div><div class="t-dot"><span></span></div><div class="t-label">Reception</div></div>
       <div class="t-row"><div class="t-time">10:00</div><div class="t-dot"><span></span></div><div class="t-label">Departure</div></div>
     </div>
     <p style="text-align:center; font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--sage); margin:56px 0 0;">Venue</p>
@@ -601,11 +602,11 @@
         <div class="field">
           <label>Will you be attending?</label>
           <div class="radio-row" id="attendRow">
-            <label class="radio-opt selected" data-val="yes"><input type="radio" name="attend" value="yes" checked>Joyfully accept</label>
+            <label class="radio-opt" data-val="yes"><input type="radio" name="attend" value="yes">Joyfully accept</label>
             <label class="radio-opt" data-val="no"><input type="radio" name="attend" value="no">Regretfully decline</label>
           </div>
         </div>
-        <div class="field" id="guestCountField">
+        <div class="field" id="guestCountField" style="display:none;">
           <label for="rGuests">Number attending</label>
           <input type="number" id="rGuests" min="1" max="6" value="1">
         </div>
@@ -665,7 +666,21 @@
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>What should I wear?</span><span class="plus">+</span></button>
-        <div class="faq-a"><p>Dressy Casual / Sunday Best. We kindly ask that guests refrain from wearing white or ivory and save those colors for the bride.</p></div>
+        <div class="faq-a"><p>Semi-Formal. For men, a suit or dress shirt with slacks is perfect; for women, a cocktail dress, midi dress, or elegant separates work beautifully. We kindly ask that guests refrain from wearing white or ivory and save those colors for the bride.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>What are your wedding colors?</span><span class="plus">+</span></button>
+        <div class="faq-a">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; padding:0 4px 20px;">
+            <span style="width:52px; height:52px; background:#E1CBB4; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#808064; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#293728; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#526174; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#839BBD; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#A4727E; border:2px solid #DCCAB7; display:inline-block;"></span>
+            <span style="width:52px; height:52px; background:#75484F; border:2px solid #DCCAB7; display:inline-block;"></span>
+          </div>
+        </div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Is there parking on site?</span><span class="plus">+</span></button>
@@ -673,7 +688,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Are children welcome?</span><span class="plus">+</span></button>
-        <div class="faq-a"><p>Unless specified on your invitation, our wedding celebration will be adults-only. We hope you're able to enjoy a fun and relaxing evening with us!</p></div>
+        <div class="faq-a"><p>We adore your little ones, and we've done our best to note on each invitation which children are able to join us. If your child's name is listed on yours, we'd love nothing more than to have them there with us. If their name doesn't appear, we hope you'll understand — and we're so grateful to you for making the evening work all the same.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Is the venue accessible?</span><span class="plus">+</span></button>
@@ -689,7 +704,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q"><span>Can I bring my own alcohol?</span><span class="plus">+</span></button>
-        <div class="faq-a"><p>Alcohol will be available at the venue. We kindly ask that guests do not bring outside alcohol, as it would violate our agreement with the venue.</p></div>
+        <div class="faq-a"><p>We kindly ask that guests do not bring outside alcohol, as it would violate our agreement with the venue.</p></div>
       </div>
     </div>
   </div>
@@ -1149,7 +1164,9 @@ window.gasPostBody = function(params){
     var name = document.getElementById('rName').value.trim();
     if(!name){ status.textContent = 'Please enter your name.'; status.className = 'rsvp-status err'; return; }
 
-    var attend = form.querySelector('input[name=attend]:checked').value;
+    var checkedAttend = form.querySelector('input[name=attend]:checked');
+    if(!checkedAttend){ status.textContent = 'Please choose whether you\'ll be attending.'; status.className = 'rsvp-status err'; return; }
+    var attend = checkedAttend.value;
     var data = {
       name: name,
       phone: document.getElementById('rPhone').value.trim(),
@@ -1170,8 +1187,7 @@ window.gasPostBody = function(params){
       sealBtn.classList.add('stamped');
       form.reset();
       attendRow.querySelectorAll('.radio-opt').forEach(function(o){ o.classList.remove('selected'); });
-      attendRow.querySelector('[data-val="yes"]').classList.add('selected');
-      guestCountField.style.display = '';
+      guestCountField.style.display = 'none';
       showThankYou(attend === 'yes');
     }catch(err){
       var reason = (err && err.message) ? err.message : 'please try again';
